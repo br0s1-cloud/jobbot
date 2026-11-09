@@ -1,30 +1,33 @@
 # Roadmap
 
-Status: **Setup done, Phase 1 ready to start** (2026-11-08)
+Status: **Phase 1 built and pushed; waiting on Luke's sign-off** (2026-11-08)
 
-## Done
-- Spec (`CLAUDE.md`) on stack v2: GitHub + Google only. Product calls are recorded in `DECISIONS.md`.
-- GitHub: public repo `br0s1-cloud/jobbot`, SSH push works from this Mac, Pages source is set to GitHub Actions.
-- Firebase project `jobbot-dadb8` (Spark plan): web app `jobbot-web` registered, Google sign-in enabled, `br0s1-cloud.github.io` authorized, Firestore `(default)` created in nam5 (production mode: denies everything until our rules deploy).
-- Local `.env.local` holds the Firebase web config (gitignored).
-- LinkedIn agent spec and risk notes moved to `private/` (gitignored).
+## Phase 1: done
+- Vite + React + TS + Tailwind; GitHub Actions runs typecheck, unit tests, build (+ demo-bundle leak check), and Firestore rules tests on the emulator, then deploys to Pages.
+- Demo dataset (generated at load): 26 real companies, 40 offices, 32 roles across every stage, nameless role-placeholder contacts, interactions, and stage history.
+- Map: MapLibre + OpenFreeMap (dark by default, light toggle), metro clustering when zoomed out, pins sized by open roles and colored by furthest stage, hover popups, click a pin to filter the board to that office, hover a card to pulse its pin.
+- Market switcher (All · DC · Austin · NYC · Seattle) and track filter, synced to the URL.
+- Pipeline rail: drag between stages (desktop and touch), inline "log a note?", amber/red staleness, collapse to a stage-count bar, Closed drop zones.
+- Detail drawer: Overview (stage, next step + due date, contacts) and Timeline.
+- Phone: opens to the board with a Map tab; the map only downloads when that tab opens.
+- Live `/atlas`: Google sign-in, an access-denied screen that shows your uid, Firestore sync with offline cache, add/edit company (with office lookup), role and contact, settings (home base, markets, theme, JSON export), designed empty state.
+- Tests: 15 unit tests (demo privacy, pins, markets, staleness, stage transitions) plus a rules suite.
 
-## Next: Phase 1
-- [ ] Vite + React + TS + Tailwind scaffold; GitHub Actions workflow builds and deploys to Pages, and runs the Firestore rules tests on the emulator.
-- [ ] Data types (Zod) for every collection; Firestore security rules locked to Luke's uid.
-- [ ] Demo data generator (real companies, nameless role-placeholder contacts, DC/Austin/NYC/Seattle).
-- [ ] Map (MapLibre + OpenFreeMap dark style) with office pins and market switcher.
-- [ ] Pipeline rail with drag-to-change-stage plus inline "log a note?"; phone layout opens to the board with a Map tab.
-- [ ] Detail drawer (Overview + Timeline).
-- [ ] Live: Google sign-in, create/edit forms, home-base and markets settings, Export all (JSON).
-- [ ] Tests: demo-PII test, rules test, stage logic.
+## Waiting on Luke
+- [ ] Open the demo (https://br0s1-cloud.github.io/jobbot/) on your phone and laptop, drag a card, and watch the pin change. That's the Phase 1 sign-off.
+- [ ] Sign in at https://br0s1-cloud.github.io/jobbot/atlas, copy the uid it shows, and send it to Claude. Claude then puts it in `firestore.rules` and publishes the rules.
+- [ ] Back up `private/` (it isn't on GitHub).
 
-## Luke to-dos
-- After the first sign-in to the live app: give Claude your Firebase uid so the security rules can lock to it.
-- Back up `private/` somewhere other than this repo (it isn't on GitHub).
+## Known gaps / notes
+- Lighthouse not yet measured on the deployed demo (target ≥90). The map chunk is ~293 KB gzipped and lazy-loaded.
+- Home-screen icon is SVG only; iOS wants a PNG apple-touch-icon (Phase 6 polish).
+- Company logos are monograms for now (Phase 6).
+
+## Next: Phase 2 (after sign-off)
+Gmail Apps Script + parsers → Firestore `ingestion_queue`; Inbox approval UI with j/k/a/e/r; Google Sheet CSV / Excel import into the Inbox with saved column mappings; demo Inbox items.
 
 ## Phases
-1. Skeleton + demo data
+1. Skeleton + demo data ✅ (awaiting sign-off)
 2. Gmail ingestion + Inbox + Sheet/Excel import
 3. Network layer + focus mode
 4. Interviews + tasks
