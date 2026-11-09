@@ -13,9 +13,11 @@ Status: **Phase 1 built and pushed; waiting on Luke's sign-off** (2026-11-08)
 - Live `/atlas`: Google sign-in, an access-denied screen that shows your uid, Firestore sync with offline cache, add/edit company (with office lookup), role and contact, settings (home base, markets, theme, JSON export), designed empty state.
 - Tests: 15 unit tests (demo privacy, pins, markets, staleness, stage transitions) plus a rules suite.
 
+## Done since
+- Owner uid is in `firestore.rules`, and the rules are published in the Firebase console (2026-11-08). The live app loads for Luke; CI rules tests pass against the real uid.
+
 ## Waiting on Luke
 - [ ] Open the demo (https://br0s1-cloud.github.io/jobbot/) on your phone and laptop, drag a card, and watch the pin change. That's the Phase 1 sign-off.
-- [ ] Sign in at https://br0s1-cloud.github.io/jobbot/atlas, copy the uid it shows, and send it to Claude. Claude then puts it in `firestore.rules` and publishes the rules.
 - [ ] Back up `private/` (it isn't on GitHub).
 
 ## Known gaps / notes
