@@ -1,6 +1,6 @@
 # Setup (for Luke)
 
-Everything runs on GitHub and your Google account (lukebrosil@gmail.com). Nothing here costs money.
+Everything runs on GitHub and your Google account. Nothing here costs money.
 
 ## What already exists
 | Piece | Where |
