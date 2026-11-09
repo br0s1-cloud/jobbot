@@ -1,7 +1,7 @@
 rules_version = '2';
 
 // jobbot: everything lives under users/{uid}/…, and only the owner's uid may read or write it.
-// Owner: Luke's Firebase Auth uid (lukebrosil@gmail.com). Any other account is denied.
+// Owner: Luke's Firebase Auth uid. Any other account is denied.
 // Apps Script writes with Luke's own Google OAuth token, which uses IAM and is not subject to these rules.
 service cloud.firestore {
   match /databases/{database}/documents {
