@@ -34,3 +34,16 @@ One line per real choice: what · why · what we rejected.
 - Interviewers stored as their own `interview_participants` records · keeps the contact links valid · rejected an array of contact IDs.
 - Demo PII test: every demo email ends in `@example.com`, no demo name or email matches the gitignored `private/denylist.txt`, and the demo build contains no Firebase config · makes "no real data in demo" enforceable · rejected manual review.
 - Firebase web config (apiKey, projectId) ships in the live bundle · it's a public identifier by design; access is enforced by security rules and authorized domains · rejected treating it as a secret.
+
+## Phase 1 build (2026-11-08)
+- Firebase web config is committed in `src/live/firebase.config.ts` · it's a public identifier that ships in the live JavaScript anyway, and data is protected by Firestore rules plus Auth's authorized domains · Luke's call; rejected a GitHub Actions variable (Claude can't enter API keys into forms) and the earlier "keep it out of the repo" plan.
+- Live data lives at `users/{uid}/<collection>/<id>`; rules allow only uids in an owner list (currently a placeholder, so everything is denied until Luke's first sign-in) · one simple ownership check, and strangers who sign in get nothing · rejected per-collection rules.
+- Map pins use MapLibre's own GeoJSON circle layers with metro clustering (bubble = open roles, color = furthest stage); deck.gl is deferred to Phase 3 for arcs · native layers are smaller and handle 300 pins easily · rejected loading deck.gl for pins alone.
+- The demo dataset is generated at page load relative to today · days-in-stage, due dates and staleness always look current · rejected a static JSON snapshot that would age.
+- The validation library (zod) is kept out of the demo bundle, and the map is lazy-loaded (on phones only when the Map tab opens) · demo entry is ~111 KB gzipped · rejected one big bundle.
+- MapLibre 6's worker is loaded through Vite's `?worker&url` import · MapLibre can't locate its own worker once bundled · rejected copying a 520 KB file into `public/`.
+- Geocoding results are cached in the browser (localStorage), and lat/lng is stored on each office, so nothing geocodes at render time · rejected a Firestore `geocode_cache` collection (more rules and writes for no real benefit at this volume).
+- Staleness colors (amber >7d, red >14d) shipped in Phase 1 rather than Phase 4 · days-in-stage was already on every card, so it was nearly free.
+- Demo interviews and Inbox items arrive with their phases (4 and 2) · no UI for them yet.
+- Firestore offline cache is on · the phone PWA opens instantly and survives bad signal.
+- Stage-change notes are stored on the `stage_history` entry (`note`) · the inline "log a note?" belongs to that specific move.

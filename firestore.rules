@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// jobbot: everything lives under users/{uid}/…, and only the owner's uid may read or write it.
+// OWNER_UIDS is filled in after Luke's first sign-in (until then, every client request is denied).
+// Apps Script writes with Luke's own Google OAuth token, which uses IAM and is not subject to these rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner(uid) {
+      return request.auth != null
+        && request.auth.uid == uid
+        && uid in ['OWNER_UID_PENDING'];
+    }
+    match /users/{uid}/{document=**} {
+      allow read, write: if isOwner(uid);
+    }
+  }
+}
